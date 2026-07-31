@@ -59,9 +59,10 @@ class DTW:
                 if abs(r-c) > self.window: #verify: > or >= ? 
                     continue #verify: or break? 
                 self.dp[r][c] = self._get_euclidean_distance(
-
-                )
-        pass #temp
+                    self.individual_path[r],
+                    self.template_path[c]
+                ) + self._get_cost(r, c)
+        return (self.dp[self.ROWS-1][self.COLS-1], self.dp) #also return the matrix for futher use
 
     def _get_euclidean_distance(self, p1: tuple[float, float], p2: tuple[float, float]) -> float: 
         """Our local cost function (Euclidean) to compare 2 points against each other."""
