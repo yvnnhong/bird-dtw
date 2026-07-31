@@ -16,4 +16,23 @@ class DTW:
         self.window: int = W
 
     def dynamic_time_warping(self) -> None: 
+        """
+        Returns the final DTW distance of a specific bird species against the template path.
+        We use the standard convention for a 2D Dynamic Time Warping matrix: 
+        The input sequence (A; individual bird path) is assigned to the rows. 
+        The template sequence (B) is assigned to the columns.
+        Visual: 
+            B0 B1 B2 
+         A0 [[] [] []
+         A1  [] [] []
+         A2  [] [] []] 
+         A note on the sakoe-chiba band: 
+         window=30 means that the warping path can deviate at MOST 30 GPS observations 
+         from the diagonal, so in practice, that is roughly a few days of timing
+         flexibility. 
+         For example: 
+         If W = 30, then the sakoe-chiba band is saying "this eagle's day 50 can only 
+         match template days 20-80. It is a TIME flexibility constraint, not a geographic one.  
+        """
+        
         pass #temp
