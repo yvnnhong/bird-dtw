@@ -46,6 +46,14 @@ class DTW:
                 first_individual_path_point, self.template_path[c] 
             ) + dp[0][c-1]
         #fill first col 
+        first_template_path_point = self.template_path[0]
+        for r in range(1, self.ROWS): 
+            if r > self.window: 
+                break #continue is also ok here, but break is an optimization.
+            dp[r][0] = self._get_euclidean_distance(
+                self.individual_path[r], first_template_path_point
+            ) + dp[r-1][0]
+        #fill in the rest: 
         
         pass #temp
 
