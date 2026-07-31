@@ -36,7 +36,17 @@ class DTW:
          match template days 20-80. It is a TIME flexibility constraint, not a geographic one.  
         """
         dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
-        #
+        dp[0][0] = self._get_euclidean_distance(self.individual_path[0], self.template_path[0])
+        #fill first row 
+        first_individual_path_point = self.individual_path[0]
+        for c in range(1, self.COLS): 
+            if c > self.window: 
+                break #continue is also ok here, but break is an optimization.
+            dp[0][c] = self._get_euclidean_distance(
+                first_individual_path_point, self.template_path[c] 
+            ) + dp[0][c-1]
+        #fill first col 
+        
         pass #temp
 
     def _get_euclidean_distance(self, p1: tuple[float, float], p2: tuple[float, float]) -> float: 
