@@ -1,4 +1,5 @@
 # core DTW file. 
+import math
 class DTW: 
     def __init__(self, A: list[tuple[float, float]], B: list[tuple[float, float]], W: int): 
         """
@@ -34,5 +35,10 @@ class DTW:
          If W = 30, then the sakoe-chiba band is saying "this eagle's day 50 can only 
          match template days 20-80. It is a TIME flexibility constraint, not a geographic one.  
         """
-        
+        dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
+        #
         pass #temp
+
+    def _get_euclidean_distance(self, p1: tuple[float, float], p2: tuple[float, float]) -> float: 
+        """Our local cost function (Euclidean) to compare 2 points against each other."""
+        return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
