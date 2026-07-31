@@ -35,28 +35,41 @@ class DTW:
          If W = 30, then the sakoe-chiba band is saying "this eagle's day 50 can only 
          match template days 20-80. It is a TIME flexibility constraint, not a geographic one.  
         """
-        dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
-        dp[0][0] = self._get_euclidean_distance(self.individual_path[0], self.template_path[0])
+        self.dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
+        self.dp[0][0] = self._get_euclidean_distance(self.individual_path[0], self.template_path[0])
         #fill first row 
         first_individual_path_point = self.individual_path[0]
         for c in range(1, self.COLS): 
             if c > self.window: 
                 break #continue is also ok here, but break is an optimization.
-            dp[0][c] = self._get_euclidean_distance(
+            self.dp[0][c] = self._get_euclidean_distance(
                 first_individual_path_point, self.template_path[c] 
-            ) + dp[0][c-1]
+            ) + self.dp[0][c-1]
         #fill first col 
         first_template_path_point = self.template_path[0]
         for r in range(1, self.ROWS): 
             if r > self.window: 
                 break #continue is also ok here, but break is an optimization.
-            dp[r][0] = self._get_euclidean_distance(
+            self.dp[r][0] = self._get_euclidean_distance(
                 self.individual_path[r], first_template_path_point
-            ) + dp[r-1][0]
+            ) + self.dp[r-1][0]
         #fill in the rest: 
-        
+        for r in range(1, self.ROWS): 
+            for c in range(1, self.COLS): 
+                if abs(r-c) > self.window: #verify: > or >= ? 
+                    continue #verify: or break? 
+                self.dp[r][c] = self._get_euclidean_distance(
+
+                )
         pass #temp
 
     def _get_euclidean_distance(self, p1: tuple[float, float], p2: tuple[float, float]) -> float: 
         """Our local cost function (Euclidean) to compare 2 points against each other."""
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+    def _get_cost(self, r: int, c: int) -> float: 
+        return min(
+            self.dp[r-1][c], #cell directly above
+            self.dp[r][c-1], #cell directly left 
+            self.dp[r-1][c-1] #cell directly diagonal up-left 
+        )
