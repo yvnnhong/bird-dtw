@@ -56,8 +56,8 @@ class DTW:
         #fill in the rest: 
         for r in range(1, self.ROWS): 
             for c in range(1, self.COLS): 
-                if abs(r-c) > self.window: #verify: > or >= ? 
-                    continue #verify: or break? 
+                if abs(r-c) > self.window:
+                    continue # Band is diagonal; we can re-enter after leaving
                 self.dp[r][c] = self._get_euclidean_distance(
                     self.individual_path[r],
                     self.template_path[c]
