@@ -108,5 +108,12 @@ class DTW:
         self.path.reverse()
         return self.path
 
-    def convert_path_indices_to_original_coordinates(self, )
+    def convert_path_indices_to_original_coordinates(self):
+        """
+        Converts grid indices to actual lat/lon coordinates. 
+        """
+        res: list[tuple[float, float]] = []
+        for r, c in self.path: 
+            res.append((self.individual_path[r], self.template_path[c]))
+        return res
         
