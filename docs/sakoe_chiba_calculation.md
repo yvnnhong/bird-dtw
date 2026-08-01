@@ -4,6 +4,8 @@
 
 The Sakoe-Chiba band constraint limits which cells in the DP grid can be filled during DTW calculation. It ensures that the individual path and template path stay roughly in sync during alignment.
 
+Note: every (lat, lon) point represents a GPS ping for a single bird's location at a given time on a given date, so this method relies on a predictable frequency of bird GPS pings. 
+
 **Constraint Formula:** `|r - c| <= window`
 
 Where:
