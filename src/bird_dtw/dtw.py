@@ -13,7 +13,7 @@ class DTW:
         """
         self.individual_path: list[tuple[float, float]] = A #goes on the rows  
         self.template_path: list[tuple[float, float]] = B #goes on the columns
-        self.ROWS, self.COLS = len(self.individual_rows), len(self.template_path)
+        self.ROWS, self.COLS = len(self.individual_path), len(self.template_path)
         self.window: int = W
 
     def dynamic_time_warping(self) -> None: 
