@@ -92,3 +92,4 @@ if __name__ == "__main__":
     print(f"Fetched {len(raw)} records.")
     print("Columns:", list(raw.columns))
     print(raw.head())
+
