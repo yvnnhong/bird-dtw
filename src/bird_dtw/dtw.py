@@ -35,6 +35,7 @@ class DTW:
          If W = 30, then the sakoe-chiba band is saying "this eagle's day 50 can only 
          match template days 20-80. It is a TIME flexibility constraint, not a geographic one.  
         """
+        #use lazy loading for instance variable creation. 
         self.dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
         self.dp[0][0] = self._get_euclidean_distance(self.individual_path[0], self.template_path[0])
         #fill first row 
@@ -81,10 +82,10 @@ class DTW:
         to the optimal path that leads to the best DTW distance.
         Input: the 2D result matrix from the dynamic_time_warping function. 
         """
-        path: list[tuple[int, int]] = []
+        self.path: list[tuple[int, int]] = [] #use lazy loading for instance variable creation. 
         r, c = self.ROWS-1, self.COLS-1 #start at bottom right hand corner 
         while r > 0 or c > 0: 
-            path.append((r, c))
+            self.path.append((r, c))
             if r == 0: #can only go left 
                 c -= 1 
             elif c == 0: #can only go up 
@@ -103,7 +104,9 @@ class DTW:
                     r -= 1 
                 elif best == self.dp[r][c-1]: 
                     c -= 1 #go left 
-        path.append((0, 0))
-        path.reverse()
-        return path
+        self.path.append((0, 0))
+        self.path.reverse()
+        return self.path
+
+    def convert_path_indices_to_original_coordinates(self, )
         
