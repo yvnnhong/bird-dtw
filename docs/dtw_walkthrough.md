@@ -1,6 +1,6 @@
 # DTW Walkthrough
 
-**NOTE:** A IS UP AND DOWN (rows). TEMPLATE IS LEFT TO RIGHT (COLS)
+**Note:** A IS UP AND DOWN (rows). TEMPLATE IS LEFT TO RIGHT (COLS)
 
 ## Given:
 - Individual path (A): [(0,1), (2,2), (3,3)]
@@ -9,7 +9,7 @@
 
 ---
 
-## STEP 1: INITIALIZE DP GRID
+## Step 1: Initialize DP Grid 
 
 Create 3x3 grid, all inf except dp[0][0]:
 
@@ -29,7 +29,7 @@ dp[0][0] = euclidean_distance((0,1), (0,0)) + 0
 
 ---
 
-## STEP 2: FILL FIRST ROW (row 0)
+## Step 2: Fill First Row (row 0)
 
 **Formula:** `dp[0][c] = euclidean_distance(A0, Bc) + dp[0][c-1]`
 
@@ -57,7 +57,7 @@ dp[0][0] = euclidean_distance((0,1), (0,0)) + 0
 
 ---
 
-## STEP 3: FILL FIRST COLUMN (col 0)
+## Step 3: Fill First Col (col 0)
 
 **Formula:** `dp[r][0] = euclidean_distance(Ar, B0) + dp[r-1][0]`
 
@@ -87,7 +87,7 @@ dp[0][0] = euclidean_distance((0,1), (0,0)) + 0
 
 ---
 
-## STEP 4: FILL INTERIOR CELLS
+## Step 4: fill interior cells 
 
 **Formula:** `dp[r][c] = euclidean_distance(Ar, Bc) + min(dp[r-1][c], dp[r][c-1], dp[r-1][c-1])`
 
@@ -157,7 +157,7 @@ dp[0][0] = euclidean_distance((0,1), (0,0)) + 0
 
 ---
 
-## FINAL DP GRID
+## Final DP grid: 
 
 |          | B0(0,0) | B1(1,1) | B2(2,2) |
 |----------|---------|---------|---------|
@@ -167,7 +167,7 @@ dp[0][0] = euclidean_distance((0,1), (0,0)) + 0
 
 ---
 
-## RESULT
+## Result 
 
 **Total DTW Distance = dp[2][2] = 3.414**
 
