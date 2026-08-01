@@ -74,3 +74,36 @@ class DTW:
             self.dp[r][c-1], #cell directly left 
             self.dp[r-1][c-1] #cell directly diagonal up-left 
         )
+
+    def backtrack(self) -> list[tuple[int, int]]: #temp
+        """
+        This backtracking function returns the indices (zero-indexed) corresponding
+        to the optimal path that leads to the best DTW distance.
+        Input: the 2D result matrix from the dynamic_time_warping function. 
+        """
+        path: list[tuple[int, int]] = []
+        r, c = self.ROWS-1, self.COLS-1 #start at bottom right hand corner 
+        while r > 0 or c > 0: 
+            path.append((r, c))
+            if r == 0: #can only go left 
+                c -= 1 
+            elif c == 0: #can only go up 
+                r -= 1
+            else: 
+                best: float = min(
+                    self.dp[r-1][c], #up
+                    self.dp[r][c-1], #left 
+                    self.dp[r-1][c-1] #diagonal up-left 
+                )
+                #This is written so that if there is a tie between best choices, 
+                #it follows the order below. 
+                if best == self.dp[r-1][c-1]: #move position accordingly 
+                    r, c = r-1, c-1 
+                elif best == self.dp[r-1][c]: #go up
+                    r -= 1 
+                elif best == self.dp[r][c-1]: 
+                    c -= 1 #go left 
+        path.append((0, 0))
+        path.reverse()
+        return path
+        
