@@ -23,26 +23,39 @@ def compute_nsd(track: pd.DataFrame, home_lat: float, home_lon: float) -> pd.Ser
 
 
 def _longest_run(mask: pd.Series, max_gap: int = 0,
-                  within: tuple[int, int] | None = None) -> tuple[int, int] | None:
+                  within: tuple[int, int] | None = None,
+                  max_total_gap: int | None = None) -> tuple[int, int] | None:
+    """
+    Return (start_idx, end_idx) of the longest run of True values in mask,
+    bridging individual gaps up to `max_gap` fixes long. `max_total_gap`
+    caps the SUM of all bridged gaps in a single run (defaults to max_gap,
+    i.e. only one stopover-length gap total is allowed per run).
+    """
+    if max_total_gap is None:
+        max_total_gap = max_gap
     lo, hi = within if within is not None else (0, len(mask) - 1)
     best = None
     run_start = None
     gap = 0
+    total_gap = 0
     for i in range(lo, hi + 1):
         val = mask.iloc[i]
         if val:
             if run_start is None:
                 run_start = i
+                total_gap = 0
             gap = 0
         else:
             if run_start is not None:
                 gap += 1
-                if gap > max_gap:
+                total_gap += 1
+                if gap > max_gap or total_gap > max_total_gap:
                     end = i - gap
                     if best is None or (end - run_start) > (best[1] - best[0]):
                         best = (run_start, end)
                     run_start = None
                     gap = 0
+                    total_gap = 0
     if run_start is not None:
         end = hi - gap
         if best is None or (end - run_start) > (best[1] - best[0]):
@@ -68,11 +81,16 @@ def segment_track(
     rate = nsd_smooth.diff(trend_lag) / trend_days
 
     max_abs_rate = rate.abs().max()
-    flat = rate.abs() < (flat_threshold_frac * max_abs_rate)
-    winter_run = _longest_run(flat, max_gap=stopover_gap_fixes)
-
-    rising = rate > 0
-    falling = rate < 0
+    max_nsd = nsd_smooth.max()
+    near_max_nsd = nsd_smooth > (0.7 * max_nsd)  # "far from home" = candidate wintering
+    min_days_before_winter = 50
+    min_start_idx = int(min_days_before_winter * fixes_per_day)
+    winter_run = _longest_run(near_max_nsd, max_gap=stopover_gap_fixes, within=(min_start_idx, len(nsd_smooth) - 1))
+    print(f"DEBUG: winter_run indices = {winter_run}")
+    
+    rising_threshold = flat_threshold_frac * max_abs_rate
+    rising = rate > rising_threshold
+    falling = rate < -rising_threshold
 
     if winter_run:
         before = (0, winter_run[0] - 1) if winter_run[0] > 0 else None
@@ -81,7 +99,23 @@ def segment_track(
         before = (0, len(rate) - 1)
         after = (0, len(rate) - 1)
 
+    max_south_days = 110
+    max_south_fixes = int(max_south_days * fixes_per_day)
     south_run = _longest_run(rising, max_gap=stopover_gap_fixes, within=before) if before else None
+    print(f"DEBUG: south_run before cap = {south_run}, max_south_fixes={max_south_fixes}")
+    if south_run and (south_run[1] - south_run[0]) > max_south_fixes:
+        south_run = (south_run[0], south_run[0] + max_south_fixes)
+    print(f"DEBUG: south_run after cap = {south_run}")
+    if south_run:
+        real_start = track["timestamp"].iloc[south_run[0]]
+        real_end = track["timestamp"].iloc[south_run[1]]
+        print(f"DEBUG: south_run spans real dates {real_start} to {real_end}, index count={south_run[1]-south_run[0]}")
+    south_run_nobridge = _longest_run(rising, max_gap=0, within=before) if before else None
+    print(f"DEBUG: south_run with NO bridging = {south_run_nobridge}")
+    if south_run_nobridge:
+        nb_start = track["timestamp"].iloc[south_run_nobridge[0]]
+        nb_end = track["timestamp"].iloc[south_run_nobridge[1]]
+        print(f"DEBUG: no-bridge south_run spans real dates {nb_start} to {nb_end}")
     north_run = _longest_run(falling, max_gap=stopover_gap_fixes, within=after) if after else None
 
     phase = pd.Series("wintering", index=track.index)
