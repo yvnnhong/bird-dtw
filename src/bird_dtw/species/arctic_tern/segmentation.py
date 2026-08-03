@@ -82,7 +82,8 @@ def segment_track(
 
     max_abs_rate = rate.abs().max()
     max_nsd = nsd_smooth.max()
-    near_max_nsd = nsd_smooth > (0.7 * max_nsd)  # "far from home" = candidate wintering
+    near_max_nsd = nsd_smooth > (0.85 * max_nsd)  # "far from home" = candidate wintering
+    #^old was 0.7
     min_days_before_winter = 50
     min_start_idx = int(min_days_before_winter * fixes_per_day)
     winter_run = _longest_run(near_max_nsd, max_gap=stopover_gap_fixes, within=(min_start_idx, len(nsd_smooth) - 1))
