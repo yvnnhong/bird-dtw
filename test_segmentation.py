@@ -1,7 +1,7 @@
 from bird_dtw.species.arctic_tern.data import fetch_data, load_tracks
-from bird_dtw.species.arctic_tern.segmentation import segment_track
+from bird_dtw.species.arctic_tern.segmentation.segmentation import segment_track
 
-import bird_dtw.species.arctic_tern.segmentation as seg_module
+import bird_dtw.species.arctic_tern.segmentation.segmentation as seg_module
 print("Loading segmentation.py from:", seg_module.__file__)
 
 raw = fetch_data()
