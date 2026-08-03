@@ -107,7 +107,7 @@ mistaking noise for movement).
 | ARTE_408 | 58/31 | 59/31 | 59/32 | 59/32 |
 | ARTE_410 | 59/33 | 59/33 | 59/33 | 60/33 |
 
-(Format: southbound days / northbound days)
+(Format: southbound days / northbound days. Note: we start in the North.)
 
 **What we learned:** this parameter barely mattered. Seven of nine birds
 moved by 0–2 days total across the whole 0.08→0.05 range — essentially
