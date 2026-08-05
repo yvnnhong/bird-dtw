@@ -17,10 +17,11 @@ Per Egevang et al. 2010 (the source paper for this project's data):
 - **Northbound (spring/return) migration:** April–May, averaging 40 days
   (range 36–46 days)
 
-Northbound is roughly **half the length** of southbound, despite covering
-similar ground. This isn't a coincidence, and it isn't a data quality
+In terms of the number of days taken, northbound is roughly **half the length** of southbound, despite covering similar ground. This isn't a coincidence, and it isn't a data quality
 issue — it's a real, published biological asymmetry, driven mainly by
 ocean wind patterns.
+
+In terms of distance, northbound is also shorter than southbound: Egevang et al. 2010 recorded an average northbound distance of 24,270 km (range 20,070–27,790 km) at roughly 520 km/day. Southbound is both slower and covers more ground, partly because — unlike northbound's more direct open-ocean crossing — southbound birds follow one of two coastal routes (West African coast or Brazilian coast), adding distance and individual variation that the return trip doesn't have.
 
 ## What a gyre is
 **In plain terms:** a gyre is a giant, slow, circular current of wind and
