@@ -84,3 +84,6 @@ to get backwards intuitively. See `north_vs_south.md`.
   passed in, via `fixes_per_day`.
 - `smooth_days` gets converted into a row-count window internally; it is
   not itself the number of rows averaged. See `nsd_and_smoothing.md`.
+
+## 10. Wintering  
+The wintering stretch follows the same run-selection rules as the south and the north stretches except it has that rule about being more than 85%. 
