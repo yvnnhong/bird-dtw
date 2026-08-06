@@ -171,24 +171,3 @@ and `trend_days` = 2:
 (This toy example only rises throughout, since our 6 sample points were
 chosen just to demonstrate the smoothing arithmetic clearly — a real
 bird's rate would eventually turn negative during the northbound leg.)
-
----
-
-## Part 4: Two completely different uses of "rolling" — don't confuse
-## these
-
-This project uses the word "rolling" (or the concept of averaging) in
-two **unrelated** places. They are easy to mix up, so here they are side
-by side:
-
-| | **NSD smoothing (Part 2, above)** | **Paper-comparison validation** |
-|---|---|---|
-| Is it a real rolling average? | **Yes** — literal `pandas.rolling().mean()` | **No** — not a rolling average at all |
-| Where does it happen? | Inside `segment_track()`, in `segmentation.py` | Nowhere in code — done manually |
-| What is it applied to? | The NSD signal itself, per GPS fix | Total day-counts printed by `test_segmentation.py` |
-| How is it checked? | Automatically, by pandas, every time `segment_track()` runs | By a human, reading printed output and comparing it by eye to the paper's 69–103 / 36–46 day range |
-
-If you ever see "rolling" or "average" mentioned elsewhere in this
-project's docs, check which of these two it's referring to — they are
-not the same process, and only one of them (NSD smoothing) is actual
-running code.
