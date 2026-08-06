@@ -44,6 +44,16 @@ year from accidentally being mistaken for wintering, since the bird is
 also near home (low NSD) right after tagging, not during a real wintering
 plateau.
 
+**Important: only ONE final run is kept per phase.** While scanning
+through the data, the run-finding logic can encounter several separate
+candidate stretches (broken up by gaps too big to bridge). All of them
+are tracked as it goes, but only the single **longest** one is kept as
+the final answer — the rest are discarded. This applies identically to
+`winter_run`, `south_run`, and `north_run`: each is one single winning
+stretch, not a combination of multiple stretches. See
+`chaining_and_bridging.md` for a full walkthrough of exactly how this
+works.
+
 **6. Split the timeline into "before wintering" and "after wintering."**
 Once `winter_run` is found, everything before it becomes the search
 window for southbound; everything after becomes the search window for
