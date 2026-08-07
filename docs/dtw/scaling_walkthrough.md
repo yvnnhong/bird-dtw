@@ -7,12 +7,9 @@ Here is a concrete example to demonstrate how scaling works.
 Let's say that ROWS, COLS = len(grid), len(grid[0]) = 3, 5.
 Assume we are working in a zero-indexed system. 
 
-       0     1     2     3     4
-    ┌─────┬─────┬─────┬─────┬─────┐
- 0  │     │     │     │     │     │
-    ├─────┼─────┼─────┼─────┼─────┤
- 1  │     │     │     │     │     │
-    ├─────┼─────┼─────┼─────┼─────┤
- 2  │     │     │     │     │     │
-    └─────┴─────┴─────┴─────┴─────┘
+|     | 0 | 1 | 2 | 3 | 4 |
+|-----|---|---|---|---|---|
+| 0   |   |   |   |   |   |
+| 1   |   |   |   |   |   |
+| 2   |   |   |   |   |   |
 
