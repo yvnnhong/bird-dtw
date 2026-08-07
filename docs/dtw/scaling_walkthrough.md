@@ -20,4 +20,5 @@ expected_c = r * (COLS / ROWS)
 Then, we use the following formula to see if it lies within the Sakoe-Chiba band: 
 abs(c - expected_c) > window
 
+Anything strictly greater than window is marked as an unusable cell in our path. 
 
