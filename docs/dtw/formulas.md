@@ -9,7 +9,9 @@
 Calculates great-circle distance between two lat/lon points on a sphere (Earth), in km.
 
 a = sin²(Δlat/2) + cos(lat1) * cos(lat2) * sin²(Δlon/2)
+
 c = 2 * atan2(√a, √(1-a))
+
 distance = R * c
 
 Where:
