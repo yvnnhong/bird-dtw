@@ -5,7 +5,7 @@ class DTW:
         """
         Initialize latitude-longitude system to compare each animal's migratory path
         against its template path, i.e: [(lat1, lon1), (lat2, lon2), (lat3, lon3)]
-        Euclidean = local cost function we are using. 
+        haversine = distance between 2 (lat, lon) points on a sphere. 
         DTW = overall alignment function we are using. 
         Window = the sakoe-chiba band size. 
         Latitude analogy -> horizontal stripes (e.x. rings of saturn)
@@ -37,13 +37,13 @@ class DTW:
         """
         #use lazy loading for instance variable creation. 
         self.dp = [[float('inf')] * self.COLS for _ in range(self.ROWS)]
-        self.dp[0][0] = self._get_euclidean_distance(self.individual_path[0], self.template_path[0])
+        self.dp[0][0] = self._get_haversine_km(self.individual_path[0], self.template_path[0])
         #fill first row 
         first_individual_path_point = self.individual_path[0]
         for c in range(1, self.COLS): 
             if not self._in_band(0, c): 
                 continue #allow for re-entry into the valid band 
-            self.dp[0][c] = self._get_euclidean_distance(
+            self.dp[0][c] = self._get_haversine_km(
                 first_individual_path_point, self.template_path[c] 
             ) + self.dp[0][c-1]
         #fill first col 
@@ -51,7 +51,7 @@ class DTW:
         for r in range(1, self.ROWS): 
             if not self._in_band(r, 0):  
                 continue #allow for re-entry into band 
-            self.dp[r][0] = self._get_euclidean_distance(
+            self.dp[r][0] = self._get_haversine_km(
                 self.individual_path[r], first_template_path_point
             ) + self.dp[r-1][0]
         #fill in the rest: 
@@ -59,15 +59,11 @@ class DTW:
             for c in range(1, self.COLS): 
                 if not self._in_band(r, c): 
                     continue # Band is diagonal; we can re-enter after leaving
-                self.dp[r][c] = self._get_euclidean_distance(
+                self.dp[r][c] = self._get_haversine_km(
                     self.individual_path[r],
                     self.template_path[c]
                 ) + self._get_cost(r, c)
         return (self.dp[self.ROWS-1][self.COLS-1], self.dp) #also return the matrix for futher use
-
-    def _get_euclidean_distance(self, p1: tuple[float, float], p2: tuple[float, float]) -> float: 
-        """Our local cost function (Euclidean) to compare 2 points against each other."""
-        return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
     def _get_cost(self, r: int, c: int) -> float: 
         return min(
@@ -118,6 +114,20 @@ class DTW:
         return res
 
     def _in_band(self, r: int, c: int) -> bool: 
+        """
+        private helper function to determine whether or not a given (r, c) cell falls 
+        within the allowable band size. 
+        """
         expected_c = r * (self.COLS / self.ROWS)
         return abs(c - expected_c) <= self.window
+
+    def _get_haversine_km(self, p1: tuple[float, float], p2: tuple[float, float]) -> float:
+        lat1, lon1 = math.radians(p1[0]), math.radians(p1[1])
+        lat2, lon2 = math.radians(p2[0]), math.radians(p2[1])
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        R = 6371
+        return R * c
         
