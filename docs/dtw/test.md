@@ -28,9 +28,9 @@ expected_c = 1 * (5/3) = 1.67
 
 Next, we perform the band check. Since we are going from top row to bottom row, left to right, c is the loop variable that ranges over 0,1,2,3,4 (each column in row r=1). In other words: c is not one fixed value. For this example, expected_c=1.67 stays fixed, and c gets checked against it separately at c=0, c=1, c=2, c=3, c=4.
 
-Here are the results of each of these c-values. Let's say that window=2 for simplicity: 
+Here are the results of each of these c-values. (keep in mind that we set r=1). Let's say that window=2 for simplicity: 
 
-`for c=0: abs(0-1.67) = 1.67 (qualifies)`
+`for c=0: abs(0-1.67) = 1.67 (qualifies)` -> this corresponds to the point (1, 0)
 
 `for c=1: abs(1-1.67) = 1.67 (qualifies)`
 
@@ -43,3 +43,6 @@ Here are the results of each of these c-values. Let's say that window=2 for simp
 [finish this later]
 
 Note that the window is symmetric (+/- in either direction), but the abs() essentially renders it as positive.
+
+The general idea: The goal: For each cell (r, c) in the grid, we need to decide: is this cell "close enough to the diagonal" to bother calculating? Or is it too far off, so we skip it?
+
