@@ -41,23 +41,23 @@ class DTW:
         #fill first row 
         first_individual_path_point = self.individual_path[0]
         for c in range(1, self.COLS): 
-            if c > self.window: 
-                break #continue is also ok here, but break is an optimization.
+            if not self._in_band(0, c): 
+                continue #allow for re-entry into the valid band 
             self.dp[0][c] = self._get_euclidean_distance(
                 first_individual_path_point, self.template_path[c] 
             ) + self.dp[0][c-1]
         #fill first col 
         first_template_path_point = self.template_path[0]
         for r in range(1, self.ROWS): 
-            if r > self.window: 
-                break #continue is also ok here, but break is an optimization.
+            if not self._in_band(r, 0):  
+                continue #allow for re-entry into band 
             self.dp[r][0] = self._get_euclidean_distance(
                 self.individual_path[r], first_template_path_point
             ) + self.dp[r-1][0]
         #fill in the rest: 
         for r in range(1, self.ROWS): 
             for c in range(1, self.COLS): 
-                if abs(r-c) > self.window:
+                if not self._in_band(r, c): 
                     continue # Band is diagonal; we can re-enter after leaving
                 self.dp[r][c] = self._get_euclidean_distance(
                     self.individual_path[r],
