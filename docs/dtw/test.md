@@ -38,9 +38,7 @@ Here are the results of each of these c-values. (keep in mind that we set r=1). 
 
 `for c=3: abs(3-1.67) = 1.33 (qualifies)` -> this corresponds to the point (1, 3) which is a valid option in our path 
 
-`for c=4: abs()`
-
-[finish this later]
+`for c=4: abs(4-1.67) = 2.33 (DOES NOT qualify)` -> this corresponds to the point (1,4) which is NOT a valid option in our path
 
 Note that the window is symmetric (+/- in either direction), but the abs() essentially renders it as positive.
 
