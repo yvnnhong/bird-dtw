@@ -116,4 +116,8 @@ class DTW:
         for r, c in self.path: 
             res.append((self.individual_path[r], self.template_path[c]))
         return res
+
+    def _in_band(self, r: int, c: int) -> bool: 
+        expected_c = r * (self.COLS / self.ROWS)
+        return abs(c - expected_c) <= self.window
         
