@@ -30,15 +30,15 @@ Next, we perform the band check. Since we are going from top row to bottom row, 
 
 Here are the results of each of these c-values. (keep in mind that we set r=1). Let's say that window=2 for simplicity: 
 
-`for c=0: abs(0-1.67) = 1.67 (qualifies)` -> this corresponds to the point (1, 0)
+`for c=0: abs(0-1.67) = 1.67 (qualifies)` -> this corresponds to the point (1, 0) which is a valid option in our path 
 
-`for c=1: abs(1-1.67) = 1.67 (qualifies)`
+`for c=1: abs(1-1.67) = 1.67 (qualifies)` -> this corresponds to the point (1, 1) which is a valid option in our path 
 
-`for c=2: abs(2-1.67) =`
+`for c=2: abs(2-1.67) = 0.33 (qualifies)` -> this corresponds to the point (1, 2) which is a valid option in our path 
 
-`for c=3:`
+`for c=3: abs(3-1.67) = 1.33 (qualifies)` -> this corresponds to the point (1, 3) which is a valid option in our path 
 
-`for c=4:`
+`for c=4: abs()`
 
 [finish this later]
 
